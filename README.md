@@ -6,3 +6,9 @@ Welcome to my 100 days of learning Python journey! Below you'll find a detailed 
 List allow duplicates values
 len()- use to determine how many list values you have.
 List can be any values. e.g int, boolean, strings
+
+## Negative Indexing
+
+Negative indexing means start from the end
+
+-1 refers to the last item, -2 refers to the second last item etc.
