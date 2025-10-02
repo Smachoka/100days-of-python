@@ -1,4 +1,4 @@
-text ="hello world"
+text ="hello \"vikings world\" world"
 age = 30
 print(text[2:5])
 print(text[:5])
@@ -12,3 +12,4 @@ print(text.lower())
 print(text.capitalize())
 print(text.title())
 print(f" I am {age} years old")
+print(6 & 3)
