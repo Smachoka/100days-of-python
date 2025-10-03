@@ -1,0 +1,11 @@
+sort_grades =[90,67,45,78,89,23,56,99,100,83]
+sort_grades.sort()
+print(sort_grades)
+min_grade =min(sort_grades)
+max_grade =max(sort_grades)
+print(f"the minimum grade is {min_grade}")
+print(f"the maximum grade is {max_grade}")
+average = sum(sort_grades)/len(sort_grades)
+print(f"the average grade is {average}")
+descending =sorted(sort_grades, reverse=True)
+print(descending)
