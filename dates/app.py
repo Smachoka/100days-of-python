@@ -1,0 +1,13 @@
+import datetime
+x=datetime.datetime.now()
+print(x)
+print(x.year)
+print(x.strftime("%A"))
+print(x.strftime("%B"))
+print(x.strftime("%d"))
+print(x.strftime("%Y"))
+print(x.strftime("%I"))
+print(x.strftime("%H:%M:%S"))
+print(x.strftime("%p"))
+print(x.strftime("%c"))
+print(x.strftime("%x"))
