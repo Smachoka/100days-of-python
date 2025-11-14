@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Net Pay CSV Generator</title>
+  </head>
+  <body>
+    <h2>Net Pay CSV Generator</h2>
+
+    <table id="payTable" border="1">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Net Pay</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><input type="text" placeholder="Enter name" /></td>
+          <td><input type="number" placeholder="Enter net pay" /></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <button onclick="addRow()">Add Row</button>
+    <button onclick="downloadCSV()">Download CSV</button>
+
+    <script>
+      function addRow() {
+        const table = document
+          .getElementById("payTable")
+          .getElementsByTagName("tbody")[0];
+        const newRow = table.insertRow();
+        const cell1 = newRow.insertCell(0);
+        const cell2 = newRow.insertCell(1);
+        cell1.innerHTML = '<input type="text" placeholder="Enter name">';
+        cell2.innerHTML = '<input type="number" placeholder="Enter net pay">';
+      }
+
+      function downloadCSV() {
+        const rows = document.querySelectorAll("#payTable tbody tr");
+        let csvContent =
+          "Name,Net Pay,NSSF (Tier I),NSSF (Tier II),SHIF,Housing Levy,Allowable Deductions,Taxable Pay,Personal Relief,PAYE,Gross Pay\n";
+
+        rows.forEach((row) => {
+          const name = row.cells[0].children[0].value;
+          const netPay = parseFloat(row.cells[1].children[0].value);
+
+          if (!isNaN(netPay)) {
+            // Calculations based on rules
+            const personalRelief = 2400;
+            // Estimate Gross Pay iteratively
+            let grossPay = netPay + 1; // initial guess
+            let diff = 1;
+            while (diff > 0.01) {
+              const nssf1 = Math.min(0.06 * grossPay, 480);
+              const nssf2 = Math.max(0, 0.08 * (grossPay - 8000));
+              const shif = 0.03 * grossPay;
+              const housing = 0.015 * grossPay;
+              const deductions = nssf1 + nssf2 + shif + housing;
+              const taxable = grossPay - deductions;
+              const paye = Math.max(0, taxable - personalRelief);
+              const newGross = netPay + paye + deductions;
+              diff = Math.abs(newGross - grossPay);
+              grossPay = newGross;
+            }
+
+            const nssf1 = Math.min(0.06 * grossPay, 480);
+            const nssf2 = Math.max(0, 0.08 * (grossPay - 8000));
+            const shif = 0.03 * grossPay;
+            const housing = 0.015 * grossPay;
+            const deductions = nssf1 + nssf2 + shif + housing;
+            const taxable = grossPay - deductions;
+            const paye = Math.max(0, taxable - personalRelief);
+
+            csvContent += `${name},${netPay.toFixed(2)},${nssf1.toFixed(
+              2
+            )},${nssf2.toFixed(2)},${shif.toFixed(2)},${housing.toFixed(
+              2
+            )},${deductions.toFixed(2)},${taxable.toFixed(
+              2
+            )},${personalRelief.toFixed(2)},${paye.toFixed(
+              2
+            )},${grossPay.toFixed(2)}\n`;
+          }
+        });
+
+        const blob = new Blob([csvContent], {
+          type: "text/csv;charset=utf-8;",
+        });
+        const link = document.createElement("a");
+        link.href = URL.createObjectURL(blob);
+        link.download = "netpay_calculated.csv";
+        link.click();
+      }
+    </script>
+  </body>
+</html>
