@@ -1,0 +1,88 @@
+{% extends "layout.html" %} {% block content %}
+<h2>Products</h2>
+
+<form class="d-flex mb-3" method="get">
+  <input
+    class="form-control me-2"
+    name="q"
+    placeholder="Search"
+    value="{{ q }}"
+  />
+  <button class="btn btn-outline-secondary">Search</button>
+</form>
+
+<a href="{{ url_for('add_product') }}" class="btn btn-success mb-3"
+  >Add Product</a
+>
+
+<div class="row">
+  {% for p in products %}
+  <div class="col-md-4">
+    <div class="card mb-3">
+      {% if p.image %}
+      <img
+        src="{{ url_for('uploaded_file', filename=p.image) }}"
+        class="card-img-top"
+        style="height: 200px; object-fit: cover"
+      />
+      {% endif %}
+      <div class="card-body">
+        <h5 class="card-title">{{ p.title }}</h5>
+        <p class="card-text">
+          {{ p.description[:120] }}{% if p.description|length > 120 %}...{%
+          endif %}
+        </p>
+        <p class="card-text"><strong>KES {{ p.price }}</strong></p>
+        <a
+          href="{{ url_for('edit_product', product_id=p.id) }}"
+          class="btn btn-sm btn-primary"
+          >Edit</a
+        >
+        <form
+          method="post"
+          action="{{ url_for('delete_product', product_id=p.id) }}"
+          style="display: inline"
+          onsubmit="return confirm('Delete product?')"
+        >
+          <button class="btn btn-sm btn-danger">Delete</button>
+        </form>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+
+<nav>
+  <ul class="pagination">
+    {% if pagination.has_prev %}
+    <li class="page-item">
+      <a
+        class="page-link"
+        href="{{ url_for('products_list', page=pagination.prev_num, q=q) }}"
+        >Prev</a
+      >
+    </li>
+    {% else %}
+    <li class="page-item disabled"><span class="page-link">Prev</span></li>
+    {% endif %}
+    <li class="page-item disabled">
+      <span class="page-link"
+        >Page {{ pagination.page }} / {{ pagination.pages }} ({{
+        pagination.total }})</span
+      >
+    </li>
+    {% if pagination.has_next %}
+    <li class="page-item">
+      <a
+        class="page-link"
+        href="{{ url_for('products_list', page=pagination.next_num, q=q) }}"
+        >Next</a
+      >
+    </li>
+    {% else %}
+    <li class="page-item disabled"><span class="page-link">Next</span></li>
+    {% endif %}
+  </ul>
+</nav>
+
+{% endblock %}

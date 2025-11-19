@@ -1,0 +1,42 @@
+{% extends "layout.html" %} {% block content %}
+<h2>{{ action }} Product</h2>
+<form method="post" enctype="multipart/form-data">
+  <div class="mb-3">
+    <label class="form-label">Title</label>
+    <input
+      class="form-control"
+      name="title"
+      value="{{ product.title if product else '' }}"
+      required
+    />
+  </div>
+  <div class="mb-3">
+    <label class="form-label">Description</label>
+    <textarea class="form-control" name="description">
+{{ product.description if product else '' }}</textarea
+    >
+  </div>
+  <div class="mb-3">
+    <label class="form-label">Price</label>
+    <input
+      class="form-control"
+      name="price"
+      value="{{ product.price if product else '' }}"
+      type="number"
+      step="0.01"
+    />
+  </div>
+  <div class="mb-3">
+    <label class="form-label">Image</label>
+    <input class="form-control" name="image" type="file" />
+    {% if product and product.image %}
+    <img
+      src="{{ url_for('uploaded_file', filename=product.image) }}"
+      style="max-width: 150px; margin-top: 10px"
+    />
+    {% endif %}
+  </div>
+  <button class="btn btn-primary">{{ action }}</button>
+  <a href="{{ url_for('products_list') }}" class="btn btn-secondary">Cancel</a>
+</form>
+{% endblock %}

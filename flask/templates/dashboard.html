@@ -1,0 +1,28 @@
+{% extends "layout.html" %} {% block content %}
+<h2>Dashboard</h2>
+<p>Welcome, {{ current_user.name }} ({{ current_user.role }})</p>
+<hr />
+<div class="row">
+  <div class="col-md-4">
+    <a
+      href="{{ url_for('products_list') }}"
+      class="btn btn-outline-primary w-100 mb-2"
+      >Manage Products</a
+    >
+  </div>
+  <div class="col-md-4">
+    <a
+      href="{{ url_for('add_product') }}"
+      class="btn btn-outline-success w-100 mb-2"
+      >Add Product</a
+    >
+  </div>
+</div>
+{% if users %}
+<h3>All Users</h3>
+<ul>
+  {% for u in users %}
+  <li>{{ u.name }} - {{ u.email }} - {{ u.role }}</li>
+  {% endfor %}
+</ul>
+{% endif %} {% endblock %}

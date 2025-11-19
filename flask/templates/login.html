@@ -1,0 +1,14 @@
+{% extends "layout.html" %} {% block content %}
+<h2>Login</h2>
+<form method="post">
+  <div class="mb-3">
+    <label class="form-label">Email</label>
+    <input class="form-control" name="email" type="email" required />
+  </div>
+  <div class="mb-3">
+    <label class="form-label">Password</label>
+    <input class="form-control" name="password" type="password" required />
+  </div>
+  <button class="btn btn-primary">Login</button>
+</form>
+{% endblock %}
