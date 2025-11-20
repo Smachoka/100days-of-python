@@ -299,6 +299,7 @@ def api_get_products(current_user):
 # Initialize DB & run
 # -----------------
 if __name__ == '__main__':
-    os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
-    db.create_all()
+    with app.app_context():
+        db.create_all()
     app.run(debug=True)
+
